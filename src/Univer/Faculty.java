@@ -25,24 +25,6 @@ public class Faculty {
     }
 
     public void addStudent(Student[] allStudents, Student student){
-
-        for (Student stud : allStudents) {
-            if(stud == student  && !checkStudent(student)){
-                University.addNewArrayElement(students, student);
-                break;
-            }
-        }
-    }
-
-    boolean checkStudent(Student student){
-
-        boolean ret = false;
-        for (Student stud : students) {
-            if(stud == student){
-                University.addNewArrayElement(students, student);
-                ret = true;
-            }
-        }
-        return ret;
+        University.addNewArrElWithCheck(allStudents, students, student);
     }
 }

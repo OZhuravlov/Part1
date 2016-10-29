@@ -1,6 +1,7 @@
 package Univer;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class University {
 
@@ -53,5 +54,27 @@ public class University {
     public static void addNewArrayElement(Object[] objects, Object object) {
         objects = Arrays.copyOf(objects, objects.length + 1);
         objects[objects.length - 1] = object;
+    }
+
+    public static void addNewArrElWithCheck(Object[] allObjects, Object[] localObjects, Object obj){
+
+        for (Object o : allObjects) {
+            if(o == obj  && !checkArrEl(localObjects, obj)){
+               addNewArrayElement(localObjects, obj);
+               break;
+            }
+        }
+    }
+
+    static boolean checkArrEl(Object[] localObjects, Object obj){
+
+        boolean ret = false;
+        for (Object o : localObjects) {
+            if(o == obj){
+                University.addNewArrayElement(localObjects, obj);
+                ret = true;
+            }
+        }
+        return ret;
     }
 }
