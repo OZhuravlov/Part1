@@ -4,35 +4,35 @@ public class UnivDemo {
 
     public static void main(String[] args) {
 
-        Subject[] subjects = {new Subject("Maths", null)
-                , new Subject("Physics", null)
-                , new Subject("Astronomy", null)
-                , new Subject("Mechanics", null)
-                , new Subject("English", null)
-        };
+        University univ = new University ("Tech University");
 
-        Teacher[] teachers = {new Teacher("John Smith", Gender.Male, AcademicDegree.Candidate)
-                , new Teacher("Helen Lee", Gender.Female, AcademicDegree.Doctor)
-                , new Teacher("Anton Pavlov", Gender.Male, AcademicDegree.Professor)
-                , new Teacher("Anna Sul", Gender.Female, AcademicDegree.Doctor)
-                , new Teacher("Jim Michael", Gender.Male, AcademicDegree.Candidate)
-        };
+        univ.addNewFaculty("Mechanics faculty");
+        univ.addNewFaculty("Physics faculty");
+        univ.addNewFaculty("Maths faculty");
+        System.out.println(univ.getFaculties().length);
 
-        Faculty[] faculties = {new Faculty("Mechanics faculty")
-                , new Faculty("Physics faculty")
-                , new Faculty("Maths faculty")
-        };
+        univ.addNewSubject("Maths");
+        univ.addNewSubject("Physics");
+        univ.addNewSubject("Astronomy");
+        univ.addNewSubject("Mechanics");
+        univ.addNewSubject("English");
+        System.out.println(univ.getSubjects().length);
 
-        Student[] students =  {new Student("Billy Idol", Gender.Male, 1)
-                , new Student("Helen Lee", Gender.Female, 2)
-                , new Student("Anton Pavlov", Gender.Male, 3)
-                , new Student("Anna Sul", Gender.Female, 4)
-                , new Student("Jim Michael", Gender.Male, 5)
-        };
+        univ.addNewTeacher("John Smith", Gender.Male, AcademicDegree.Candidate);
+        univ.addNewTeacher("Helen Lee", Gender.Female, AcademicDegree.Doctor);
+        univ.addNewTeacher("Anton Pavlov", Gender.Male, AcademicDegree.Professor);
+        univ.addNewTeacher("Anna Sul", Gender.Female, AcademicDegree.Doctor);
+        univ.addNewTeacher("Jim Michael", Gender.Male, AcademicDegree.Candidate);
+        System.out.println(univ.getTeachers().length);
 
-        University university = new University ("Tech University");
+        univ.getFaculties()[0].addNewStudent("Billy Lynk", Gender.Male, 1);
+        univ.getFaculties()[0].addNewStudent("Helen Lee", Gender.Female, 2);
+        univ.getFaculties()[1].addNewStudent("Anton Pavlov", Gender.Male, 3);
+        univ.getFaculties()[2].addNewStudent("Anna Sul", Gender.Female, 4);
+        univ.getFaculties()[2].addNewStudent("Jim Michael", Gender.Male, 5);
 
-        System.out.println();
+        System.out.println(univ.getFaculties()[0].getStudents().length);
+        System.out.println(univ.getFaculties()[2].getStudents().length);
 
     }
 }

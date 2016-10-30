@@ -2,29 +2,59 @@ package Univer;
 
 import java.util.Arrays;
 
-public class Faculty {
+class Faculty {
 
     private final String name;
-    private Subject[] subjects;
-    private Student[] students;
+    private Subject[] subjects = new Subject[0];
+    private Student[] students = new Student[0];
 
-    public Faculty(String name) {
+    Faculty(String name) {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
+    String getName() {
+        return this.name;
     }
 
-    public Subject[] getSubjects() {
-        return subjects;
+    Subject[] getSubjects() {
+        return this.subjects;
     }
 
-    public Student[] getStudents() {
+    Student[] getStudents() {
+        return this.students;
+    }
+
+    void addNewStudent(String studentName, Gender studentGender, int course) {
+
+        Student student = new Student(studentName, studentGender, course);
+        this.students = addStudent(this.students, student);
+    }
+
+    private Student[] addStudent(Student[] students, Student student) {
+
+        students = Arrays.copyOf(students, students.length + 1);
+        students[students.length - 1] = student;
         return students;
     }
 
-    public void addStudent(Student[] allStudents, Student student){
-        University.addNewArrElWithCheck(allStudents, students, student);
+    Student[] addStudentWithCheck(Student[] localStudents, Student student){
+
+        boolean isFound = false;
+
+        for (Student s : this.students) {
+            if(s == student){
+                for (Student ls : localStudents) {
+                    if(ls == student){
+                        isFound = true;
+                        break;
+                    }
+                }
+                if(!isFound){
+                    localStudents = addStudent(localStudents, student);
+                }
+                break;
+            }
+        }
+        return localStudents;
     }
 }

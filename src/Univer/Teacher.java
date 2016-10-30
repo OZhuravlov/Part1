@@ -1,12 +1,19 @@
 package Univer;
 
-public class Teacher extends Person{
+class Teacher extends Person{
 
     private AcademicDegree academDegree;
 
-    public Teacher(String name, Gender gender, AcademicDegree academDegree) {
+    Teacher(String name, Gender gender, AcademicDegree academDegree) {
         super(name, gender);
         this.academDegree = academDegree;
     }
 
+    AcademicDegree getAcademDegree() {
+        return academDegree;
+    }
+
+    void setAcademDegree(AcademicDegree academDegree) {
+        this.academDegree = academDegree;
+    }
 }
