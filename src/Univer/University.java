@@ -1,5 +1,7 @@
 package Univer;
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.Arrays;
 
 class University {
@@ -48,6 +50,7 @@ class University {
         teachers = Arrays.copyOf(teachers, teachers.length + 1);
         teachers[teachers.length - 1] = teacher;
         return teachers;
+
     }
 
     void addNewSubject(String subjName) {
@@ -65,45 +68,102 @@ class University {
     }
 
 
-    Subject[] addSubjectWithCheck(Subject[] localSubjects, Subject subject){
+    private Subject[] addSubjectWithCheck(Subject[] localSubjects, Subject subject) throws Exception{
 
-        boolean isFound = false;
-
-        for (Subject s : this.subjects) {
-            if(s == subject){
-                for (Subject ls : localSubjects) {
-                    if(ls == subject){
-                        isFound = true;
-                        break;
-                    }
-                }
-                if(!isFound){
-                    localSubjects = addSubject(localSubjects, subject);
-                }
-                break;
+        try {
+            if (isCanBeAdded(this.subjects, localSubjects, subject)) {
+                localSubjects = addSubject(localSubjects, subject);
             }
+        } catch( EUnivElemNotExists e ) {
+            throw new EUnivElemNotExists("Subject " + subject.getName() + " does not exists in University's list");
+        } catch( EUnivElemAlreadyExists e ) {
+            throw new EUnivElemAlreadyExists("Subject " + subject.getName() + " is already exist in the list");
         }
         return localSubjects;
+
     }
 
-    Teacher[] addTeacherWithCheck(Teacher[] localTeachers, Teacher teacher){
+    private Teacher[] addTeacherWithCheck(Teacher[] localTeachers, Teacher teacher){
 
-        boolean isFound = false;
-
-        for (Teacher s : this.teachers) {
-            if(s == teacher){
-                for (Teacher ls : localTeachers) {
-                    if(ls == teacher){
-                        isFound = true;
-                        break;
-                    }
-                }
-                if(!isFound){
-                    localTeachers = addTeacher(localTeachers, teacher);
-                }
-                break;
+        try {
+            if( isCanBeAdded(this.teachers, localTeachers, teacher) ){
+                localTeachers = addTeacher(localTeachers, teacher);
             }
+        } catch( EUnivElemNotExists e ) {
+            throw new EUnivElemNotExists("Teacher " + teacher.getName() + " does not exists in University's list");
+        } catch( EUnivElemAlreadyExists e ) {
+            throw new EUnivElemAlreadyExists("Teacher " + teacher.getName() + " is already exist in the list");
         }
         return localTeachers;
+
+    }
+
+    void setSubjectTeacherToStudent(Student student, Subject subject, Teacher teacher) throws Exception{
+
+        student.setSubjects(addSubjectWithCheck(student.getSubjects(), subject));
+        if ( isArrayElExists(subject.getTeachers(), teacher) ) {
+            student.setTeachers(addTeacher(student.getTeachers(), teacher));
+        }
+
+    }
+
+    void setSubjectToTeacher(Teacher teacher, Subject subject) throws Exception{
+
+        teacher.setSubjects(addSubjectWithCheck(teacher.getSubjects(), subject));
+        subject.setTeachers(addTeacherWithCheck(subject.getTeachers(), teacher));
+
+    }
+
+    void setStudentSubjectReviwedOK(Student student, Subject subject) throws Exception {
+
+        if ( isCanBeAdded(student.getSubjects(), student.getReviewedSubjects(), subject) ) {
+            student.setReviewedSubjects(addSubjectWithCheck(student.getReviewedSubjects(), subject));
+        }
+
+    }
+
+    static boolean isCanBeAdded(Object[] allObjects, Object[] localObjects, Object obj){
+
+        boolean isFound;
+        boolean ret;
+        isFound = isArrayElExists(allObjects, obj);
+        if( isFound ){
+            isFound = isArrayElExists(localObjects, obj);
+            if( !isFound ) {
+                ret = true;
+            } else {
+                throw new EUnivElemAlreadyExists("");
+            }
+        } else {
+            throw new EUnivElemNotExists("");
+        }
+        return ret;
+
+    }
+
+    @Contract(pure = true)
+    private static boolean isArrayElExists(Object[] objects, Object obj){
+
+        for (Object o : objects) {
+            if( o == obj ){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    void transferStudentToNextCourse(Student student) {
+
+        for (Subject subject : student.getSubjects()) {
+            if ( !isArrayElExists(student.getReviewedSubjects(),subject) ) {
+                throw new RuntimeException("Student " + student.getName() + " has non-reviewed subjects, for example "+subject.getName());
+            }
+        }
+        if(student.getCourse() == Student.MAX_COURSE){
+            student.setFinished(true);
+        }else{
+            student.setCourse(student.getCourse()+1);
+        }
     }
 }

@@ -16,4 +16,5 @@ class Teacher extends Person{
     void setAcademDegree(AcademicDegree academDegree) {
         this.academDegree = academDegree;
     }
+
 }

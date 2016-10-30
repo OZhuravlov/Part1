@@ -28,6 +28,7 @@ class Faculty {
 
         Student student = new Student(studentName, studentGender, course);
         this.students = addStudent(this.students, student);
+
     }
 
     private Student[] addStudent(Student[] students, Student student) {
@@ -35,26 +36,21 @@ class Faculty {
         students = Arrays.copyOf(students, students.length + 1);
         students[students.length - 1] = student;
         return students;
+
     }
 
     Student[] addStudentWithCheck(Student[] localStudents, Student student){
 
-        boolean isFound = false;
-
-        for (Student s : this.students) {
-            if(s == student){
-                for (Student ls : localStudents) {
-                    if(ls == student){
-                        isFound = true;
-                        break;
-                    }
-                }
-                if(!isFound){
-                    localStudents = addStudent(localStudents, student);
-                }
-                break;
+        try {
+            if( University.isCanBeAdded(this.students, localStudents, student) ){
+                localStudents = addStudent(localStudents, student);
             }
+        } catch( EUnivElemNotExists e ) {
+            throw new EUnivElemNotExists("Student " + student.getName() + " does not exists in University's list");
+        } catch( EUnivElemAlreadyExists e ) {
+            throw new EUnivElemAlreadyExists("Student " + student.getName() + " is already exist in the list");
         }
         return localStudents;
+
     }
 }

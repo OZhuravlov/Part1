@@ -5,7 +5,7 @@ import java.util.Arrays;
 class Subject {
 
     private final String name;
-    private Teacher[] teachers;
+    private Teacher[] teachers = new Teacher[0];
 
     Subject(String name) {
         this.name = name;
@@ -19,10 +19,7 @@ class Subject {
         return teachers;
     }
 
-    void addTeacher(Teacher teacher) {
-
-        teachers = Arrays.copyOf(teachers, teachers.length+1);
-        teachers[teachers.length - 1] = teacher;
+    void setTeachers(Teacher[] teachers) {
+        this.teachers = teachers;
     }
-
 }
