@@ -144,7 +144,7 @@ class University {
     @Contract(pure = true)
     private static boolean isArrayElExists(Object[] objects, Object obj){
 
-        for (Object o : objects) {
+        for ( Object o : objects ) {
             if( o == obj ){
                 return true;
             }
@@ -155,14 +155,14 @@ class University {
 
     void transferStudentToNextCourse(Student student) {
 
-        for (Subject subject : student.getSubjects()) {
+        for ( Subject subject : student.getSubjects() ) {
             if ( !isArrayElExists(student.getReviewedSubjects(),subject) ) {
                 throw new RuntimeException("Student " + student.getName() + " has non-reviewed subjects, for example "+subject.getName());
             }
         }
-        if(student.getCourse() == Student.MAX_COURSE){
+        if( student.getCourse() == Student.MAX_COURSE ){
             student.setFinished(true);
-        }else{
+        } else {
             student.setCourse(student.getCourse()+1);
         }
     }
